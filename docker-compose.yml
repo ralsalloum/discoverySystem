@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  discovery-system:
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+    container_name: discovery-system-container
+    volumes:
+      - ./:/discovery-system
+
+#volumes:
