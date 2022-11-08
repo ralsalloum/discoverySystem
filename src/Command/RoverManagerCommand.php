@@ -37,31 +37,36 @@ final class RoverManagerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
+            // First, initialize the target area being discovered by setting the upper right corner coordinates
             $helper = $this->getHelper('question');
 
-            // First, get the coordinates of the upper right corner of the target area
             $upperRightCoordinates = $this->getUpperRightCornerCoordinates($helper, $input, $output);
 
             $surfaceCoordinates = new Coordinate($upperRightCoordinates[0], $upperRightCoordinates[1]);
             $this->surface = new TargetArea($surfaceCoordinates);
             $this->manager = new RoverManager($this->surface);
+            // End initializing the target area
 
-            // Ask for rovers information
+            // Secondly, obtain rovers information
             $this->getRoversInformation($helper, $input, $output);
+            // End obtaining registered rovers information
 
+            // Thirdly, run the instructions of each registered rover
             $this->manager->runInstructions();
+            // End running the instructions
 
+            // Finally. Retrieve new geo coordinates of each rover
             $locations = $this->manager->getVehiclesLocations();
 
             foreach ($locations as $location) {
                 $output->writeln((string) $location);
             }
+            // End retrieving new locations
 
             // return 0 to indicate the success of running the command
             return 0;
 
         } catch(\Exception $e) {
-            //$output->writeln('Failure in executing the command. Try again with valid input.');
             $output->writeln($e->getMessage());
             // return 1 to indicate the failure of running the command
             return 1;
