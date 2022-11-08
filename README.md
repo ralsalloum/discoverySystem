@@ -21,7 +21,10 @@ are exists).
 ```
 composer update
 ```
-
+_Note: if we want to use the API we have to run the symfony server first:_
+```
+symfony server:start
+```
 
 ## User Guide
 _Note: output will be displayed immediately after finish entering input for the questions
